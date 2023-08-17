@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { CategoriesModule } from './categories/categories.module';
 import { MeasuresModule } from './measures/measures.module';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MeasuresModule } from './measures/measures.module';
     }),
     CategoriesModule,
     MeasuresModule,
+    ProvidersModule,
   ],
   controllers: [],
   providers: [],

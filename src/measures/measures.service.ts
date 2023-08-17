@@ -59,7 +59,7 @@ export class MeasuresService {
           `Cannot update category with id ${id}`,
         );
       }
-      return measure; 
+      return measure;
     } catch (error) {
       throw new InternalServerErrorException(
         'An error occurred while updating the category',

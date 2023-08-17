@@ -5,10 +5,10 @@ export class CreateCategoryDto {
   @ApiProperty()
   @IsString()
   @MinLength(2)
-  name: string;
+  readonly name: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  description?: string;
+  readonly description?: string;
 }

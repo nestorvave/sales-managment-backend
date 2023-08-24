@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CategoriesModule } from './categories/categories.module';
 import { MeasuresModule } from './measures/measures.module';
 import { ProvidersModule } from './providers/providers.module';
+import { StockModule } from './stock/stock.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProvidersModule } from './providers/providers.module';
     CategoriesModule,
     MeasuresModule,
     ProvidersModule,
+    StockModule,
   ],
   controllers: [],
   providers: [],

@@ -1,10 +1,12 @@
 import {
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { Stock } from 'src/stock/entities/stock.entity';
 @Table
 export class Category extends Model {
   @PrimaryKey
@@ -16,4 +18,7 @@ export class Category extends Model {
 
   @Column({ type: DataType.STRING, allowNull: true })
   description: string;
+
+  @HasMany(() => Stock)
+  stock: Stock[];
 }

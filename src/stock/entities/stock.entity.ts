@@ -5,6 +5,7 @@ import {
   PrimaryKey,
   Table,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Category } from 'src/categories/entities/category.entity';
 import { Measure } from '../../measures/entities/measure.entity';
@@ -27,4 +28,10 @@ export class Stock extends Model {
   @ForeignKey(() => Measure)
   @Column({ type: DataType.INTEGER, allowNull: false })
   measure_id?: number;
+
+  @BelongsTo(() => Category)
+  category: Category;
+
+  @BelongsTo(() => Measure)
+  measure: Measure;
 }

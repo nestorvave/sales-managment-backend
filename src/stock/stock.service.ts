@@ -11,6 +11,9 @@ import { Stock } from './entities/stock.entity';
 import { Measure } from '../measures/entities/measure.entity';
 import { Category } from '../categories/entities/category.entity';
 
+// Relacion compra/venta, fecha de compra
+// fecha actual cuanto se vendio y cuantos productos
+
 @Injectable()
 export class StockService {
   constructor(
@@ -29,13 +32,36 @@ export class StockService {
     }
   }
 
-  findAll(): Promise<Stock[]> {
-    return this.stockModel.findAll({
-      include: {
-        all: true,
-        nested: true,
+  async findAll(): Promise<any[]> {
+    const stocks = await this.stockModel.findAll({
+      attributes: {
+        exclude: ['category_id', 'measure_id', 'createdAt', 'updatedAt'],
       },
+      include: [
+        {
+          model: Measure,
+          as: 'measure',
+          attributes: ['name'],
+        },
+        {
+          model: Category,
+          as: 'category',
+          attributes: ['name'],
+        },
+      ],
     });
+
+    const transformedStocks = stocks.map((stock) => ({
+      id: stock.id,
+      name: stock.name,
+      quantity: stock.quantity,
+      createdAt: stock.createdAt,
+      updatedAt: stock.updatedAt,
+      measure: stock.measure.name,
+      category: stock.category.name,
+    }));
+
+    return transformedStocks;
   }
 
   async findOne(id: number): Promise<Stock> {
@@ -51,9 +77,9 @@ export class StockService {
   async update(id: number, updateStockDto: UpdateStockDto): Promise<Stock> {
     try {
       const [rowsAffected, updatedStock] = await this.stockModel.update(
-        { ...updateStockDto }, // Valores a actualizar
+        { ...updateStockDto },
         {
-          where: { id }, 
+          where: { id },
           returning: true,
         },
       );
@@ -63,7 +89,7 @@ export class StockService {
 
       return updatedStock[0];
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new BadRequestException(`error: ${error.message}`);
     }
   }

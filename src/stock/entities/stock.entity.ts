@@ -7,15 +7,24 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { Category } from 'src/categories/entities/category.entity';
-@Table
+import { Measure } from '../../measures/entities/measure.entity';
+@Table({ tableName: 'stock' })
 export class Stock extends Model {
   @PrimaryKey
   @Column({ type: DataType.INTEGER, autoIncrement: true })
   id: number;
-  @Column({ type: DataType.STRING, allowNull: false })
+
+  @Column({ type: DataType.STRING, allowNull: false, unique: true })
   name: string;
 
-  @ForeignKey(() => Category)
   @Column({ type: DataType.INTEGER, allowNull: false })
+  quantity: number;
+
+  @ForeignKey(() => Category)
+  @Column({ type: DataType.INTEGER, allowNull: true })
   category_id?: number;
+
+  @ForeignKey(() => Measure)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  measure_id?: number;
 }

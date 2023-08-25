@@ -6,7 +6,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-@Table
+@Table({ tableName: 'providers' })
 export class Provider extends Model {
   @PrimaryKey
   @Column({ type: DataType.INTEGER, autoIncrement: true })

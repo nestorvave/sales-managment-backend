@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Stock } from 'src/stock/entities/stock.entity';
-@Table
+@Table({ tableName: 'categories' })
 export class Category extends Model {
   @PrimaryKey
   @Column({ type: DataType.INTEGER, autoIncrement: true })

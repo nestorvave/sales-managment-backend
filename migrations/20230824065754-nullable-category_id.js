@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.changeColumn('Stocks', 'category_id', {
+    await queryInterface.changeColumn('stock', 'category_id', {
       type: Sequelize.INTEGER,
       allowNull: true, 
     });

@@ -8,15 +8,15 @@ export class CreateStockDto {
 
   @ApiProperty()
   @IsNumber()
-  @IsOptional()
   @IsPositive()
-  readonly category_id?: number;
+  readonly quantity: number;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   @IsPositive()
-  readonly item: number;
-
+  readonly category_id?: number;
+  
   @IsNumber()
   @IsPositive()
   @ApiProperty()

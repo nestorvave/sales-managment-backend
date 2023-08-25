@@ -55,8 +55,6 @@ export class StockService {
       id: stock.id,
       name: stock.name,
       quantity: stock.quantity,
-      createdAt: stock.createdAt,
-      updatedAt: stock.updatedAt,
       measure: stock.measure.name,
       category: stock.category.name,
     }));

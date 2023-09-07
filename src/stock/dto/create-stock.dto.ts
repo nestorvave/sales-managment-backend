@@ -1,5 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsArray,
+} from 'class-validator';
 
 export class CreateStockDto {
   @ApiProperty()
@@ -16,9 +22,16 @@ export class CreateStockDto {
   @IsOptional()
   @IsPositive()
   readonly category_id?: number;
-  
+
   @IsNumber()
   @IsPositive()
   @ApiProperty()
   readonly measure_id: number;
+
+  @ApiProperty()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @IsPositive({ each: true })
+  @IsOptional()
+  readonly products?: number[];
 }

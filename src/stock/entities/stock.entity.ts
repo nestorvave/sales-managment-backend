@@ -6,9 +6,11 @@ import {
   Table,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Category } from 'src/categories/entities/category.entity';
 import { Measure } from '../../measures/entities/measure.entity';
+import { Product } from 'src/products/entities/product.entity';
 @Table({ tableName: 'stock' })
 export class Stock extends Model {
   @PrimaryKey
@@ -28,6 +30,14 @@ export class Stock extends Model {
   @ForeignKey(() => Measure)
   @Column({ type: DataType.INTEGER, allowNull: false })
   measure_id?: number;
+
+  @HasMany(() => Product)
+  @Column({
+    type: DataType.ARRAY(DataType.INTEGER),
+    allowNull: true,
+    defaultValue: [],
+  })
+  products: number[];
 
   @BelongsTo(() => Category)
   category: Category;

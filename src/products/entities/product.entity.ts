@@ -1,10 +1,13 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+
+import { Stock } from 'src/stock/entities/stock.entity';
 
 @Table({ tableName: 'products' })
 export class Product extends Model {
@@ -20,4 +23,7 @@ export class Product extends Model {
 
   @Column({ type: DataType.TEXT, allowNull: true })
   image: string;
+
+  @BelongsTo(() => Stock)
+  category: Stock;
 }

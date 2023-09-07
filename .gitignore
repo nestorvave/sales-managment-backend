@@ -3,6 +3,7 @@
 /node_modules
 postgres/
 /config/config.json
+.env
 # Logs
 logs
 *.log

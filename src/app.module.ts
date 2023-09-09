@@ -6,6 +6,8 @@ import { MeasuresModule } from './measures/measures.module';
 import { ProvidersModule } from './providers/providers.module';
 import { StockModule } from './stock/stock.module';
 import { ProductsModule } from './products/products.module';
+import { SalesModule } from './sales/sales.module';
+import { SalesDetailsModule } from './sales_details/sales_details.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { ProductsModule } from './products/products.module';
     ProvidersModule,
     StockModule,
     ProductsModule,
+    SalesModule,
+    SalesDetailsModule,
   ],
   controllers: [],
   providers: [],

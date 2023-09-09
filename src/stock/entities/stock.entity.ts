@@ -31,14 +31,6 @@ export class Stock extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false })
   measure_id?: number;
 
-  @HasMany(() => Product)
-  @Column({
-    type: DataType.ARRAY(DataType.INTEGER),
-    allowNull: true,
-    defaultValue: [],
-  })
-  products: number[];
-
   @BelongsTo(() => Category)
   category: Category;
 

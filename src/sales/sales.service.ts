@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -13,7 +18,8 @@ export class SalesService {
     @InjectModel(Sale) private saleModel: typeof Sale,
     @InjectModel(SalesDetail) private saleDetailModel: typeof SalesDetail,
   ) {}
-  async create(createSaleDto: CreateSaleDto) {
+
+  async create(createSaleDto: CreateSaleDto): Promise<Sale> {
     const { amount, details } = createSaleDto;
     let transaction: Transaction;
 
@@ -21,9 +27,6 @@ export class SalesService {
       transaction = await this.sequelize.transaction();
 
       const newSale = await this.saleModel.create({ amount }, { transaction });
-      console.log(newSale);
-
-
       const saleDetailItems = details.map((item) => ({
         quantity: item.quantity,
         price: item.price,
@@ -31,7 +34,6 @@ export class SalesService {
         sales_id: newSale.id,
       }));
 
-    
       await this.saleDetailModel.bulkCreate(saleDetailItems, { transaction });
 
       await transaction.commit();
@@ -40,15 +42,55 @@ export class SalesService {
       if (transaction) {
         await transaction.rollback();
       }
-      throw err;
+      if (err.name === 'SequelizeForeignKeyConstraintError') {
+        throw new BadRequestException(
+          'Can not create a sale because product does not exist',
+        );
+      } else {
+        throw new InternalServerErrorException(
+          'Error has occurred during transaction',
+        );
+      }
     }
   }
-  findAll() {
-    return `This action returns all sales`;
+  async findAll(): Promise<Sale[]> {
+    const sales = await this.saleModel.findAll({
+      attributes: {
+        exclude: ['updatedAt'],
+      },
+      include: [
+        {
+          model: SalesDetail,
+          as: 'details',
+          attributes: ['quantity', 'price', 'product_id'],
+        },
+      ],
+    });
+    return sales;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sale`;
+  async findOne(id: number): Promise<Sale> {
+    try {
+      const sale = await this.saleModel.findByPk(id, {
+        attributes: {
+          exclude: ['updatedAt'],
+        },
+        include: [
+          {
+            model: SalesDetail,
+            attributes: ['quantity', 'price', 'product_id'],
+          },
+        ],
+      });
+
+      if (sale) {
+        return sale;
+      } else {
+        throw new NotFoundException('Sale not found');
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('An error has occurred');
+    }
   }
 
   update(id: number, updateSaleDto: UpdateSaleDto) {

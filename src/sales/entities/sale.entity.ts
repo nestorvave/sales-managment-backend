@@ -20,5 +20,5 @@ export class Sale extends Model{
   amount: number;
 
   @HasMany(() => SalesDetail)
-  sale: SalesDetail;
+  details: SalesDetail;
 }

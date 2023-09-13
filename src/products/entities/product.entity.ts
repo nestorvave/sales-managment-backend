@@ -7,6 +7,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { SalesDetail } from 'src/sales_details/entities/sales_detail.entity';
 
 
 @Table({ tableName: 'products' })
@@ -24,4 +25,6 @@ export class Product extends Model {
   @Column({ type: DataType.TEXT, allowNull: true })
   image: string;
 
+  @HasMany(() => SalesDetail)
+  salesdetail: SalesDetail;
 }

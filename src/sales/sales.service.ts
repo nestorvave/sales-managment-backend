@@ -82,22 +82,17 @@ export class SalesService {
           },
         ],
       });
-
-      if (sale) {
-        return sale;
-      } else {
-        throw new NotFoundException('Sale not found');
-      }
+      if (!sale) throw new NotFoundException(`ID ${id} was not found`);
+      return sale;
     } catch (error) {
+      if (error.name === 'NotFoundException')
+        throw new NotFoundException(`ID ${id} was not found`);
       throw new InternalServerErrorException('An error has occurred');
     }
   }
 
-  update(id: number, updateSaleDto: UpdateSaleDto) {
-    return `This action updates a #${id} sale`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} sale`;
+  async remove(id: number) {
+    const sale = await this.findOne(id);
+    sale.destroy();
   }
 }
